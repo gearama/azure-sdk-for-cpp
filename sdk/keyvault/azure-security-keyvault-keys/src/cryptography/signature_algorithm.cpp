@@ -22,6 +22,7 @@ namespace Azure {
   const SignatureAlgorithm SignatureAlgorithm::ES384(_detail::ES384Value);
   const SignatureAlgorithm SignatureAlgorithm::ES512(_detail::ES512Value);
   const SignatureAlgorithm SignatureAlgorithm::ES256K(_detail::ES256KValue);
+  const SignatureAlgorithm SignatureAlgorithm::EdDSA(_detail::EdDSAValue);
 
   std::unique_ptr<Azure::Core::Cryptography::Hash> SignatureAlgorithm::GetHashAlgorithm() const
   {
@@ -38,7 +39,7 @@ namespace Azure {
     }
 
     if (*this == SignatureAlgorithm::RS512 || *this == SignatureAlgorithm::PS512
-        || *this == SignatureAlgorithm::ES512)
+        || *this == SignatureAlgorithm::ES512 || *this == SignatureAlgorithm::EdDSA)
     {
       return std::make_unique<Azure::Core::Cryptography::_internal::Sha512Hash>();
     }

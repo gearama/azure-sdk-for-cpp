@@ -214,6 +214,18 @@ namespace Azure { namespace Security { namespace KeyVault { namespace Keys {
      *
      */
     AZ_SECURITY_KEYVAULT_KEYS_DLLEXPORT static const KeyVaultKeyType OctHsm;
+
+    /**
+     * @brief An OKP cryptographic algorithm.
+     *
+     */
+    AZ_SECURITY_KEYVAULT_KEYS_DLLEXPORT static const KeyVaultKeyType Okp;
+
+    /**
+     * @brief An OKP cryptographic algorithm backed by a Hardware Security Module (HSM).
+     *
+     */
+    AZ_SECURITY_KEYVAULT_KEYS_DLLEXPORT static const KeyVaultKeyType OkpHsm;
   };
 
   /**
@@ -257,6 +269,16 @@ namespace Azure { namespace Security { namespace KeyVault { namespace Keys {
      *
      */
     std::string const& ToString() const { return m_value; }
+
+    /**
+     * @brief Gets the Ed25519 elliptic curve.
+     *
+     * @remark For more information, see
+     *  <a href="https://docs.microsoft.com/azure/key-vault/keys/about-keys#curve-types">Curve
+     * types</a>.
+     *
+     */
+    AZ_SECURITY_KEYVAULT_KEYS_DLLEXPORT static const KeyCurveName Ed25519;
 
     /**
      * @brief Gets the NIST P-256 elliptic curve, AKA SECG curve SECP256R1.

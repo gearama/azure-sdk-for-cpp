@@ -6,6 +6,8 @@
 
 namespace Azure { namespace Security { namespace KeyVault { namespace Keys {
 
+  const KeyCurveName KeyCurveName::Ed25519(_detail::Ed25519Value);
+
   const KeyCurveName KeyCurveName::P256(_detail::P256Value);
 
   const KeyCurveName KeyCurveName::P256K(_detail::P256KValue);

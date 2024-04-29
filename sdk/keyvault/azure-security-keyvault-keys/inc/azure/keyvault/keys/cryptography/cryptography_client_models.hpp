@@ -138,6 +138,13 @@ namespace Azure {
      *
      */
     AZ_SECURITY_KEYVAULT_KEYS_DLLEXPORT static const SignatureAlgorithm ES256K;
+
+     /**
+     * cspell: disable-next-line
+     * @brief An ECDSA with a secp256k1 curve #SignatureAlgorithm
+     *
+     */
+    AZ_SECURITY_KEYVAULT_KEYS_DLLEXPORT static const SignatureAlgorithm EdDSA;
   };
 
   /**
