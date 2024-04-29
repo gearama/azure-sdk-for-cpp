@@ -237,6 +237,40 @@ TEST_P(KeyVaultKeyClientWithParam, RemoteSignVerifyRSA384)
   }
 }
 
+TEST_P(KeyVaultKeyClientWithParam, RemoteSignVerifyEdDSA)
+{
+  auto const keyName = GetTestName(true);
+  auto const& client = GetClientForTest(keyName);
+
+  CreateEdDSAKeyOptions edDSAKeyOptions(keyName);
+  edDSAKeyOptions.KeySize = GetParam();
+  auto edDSAKey = client.CreateEdDSAKey(edDSAKeyOptions).Value;
+
+  // init crypto client from key ID. The remote client will get the key and try to create a local
+  // crypto client.
+  auto cryptoClient = GetCryptoClient(edDSAKey.Id());
+  std::string digestSource("A single block of plaintext");
+
+  // RS384
+  {
+    Azure::Core::Cryptography::_internal::Sha384Hash sha384;
+    auto signatureAlgorithm = SignatureAlgorithm::EdDSA;
+    std::vector<uint8_t> digest
+        = sha384.Final(reinterpret_cast<const uint8_t*>(digestSource.data()), digestSource.size());
+
+    auto signResult = cryptoClient->Sign(signatureAlgorithm, digest).Value;
+    EXPECT_EQ(signResult.Algorithm.ToString(), signatureAlgorithm.ToString());
+    EXPECT_EQ(signResult.KeyId, edDSAKey.Id());
+    EXPECT_GT(signResult.Signature.size(), 0u);
+
+    auto verifyResult
+        = cryptoClient->Verify(signResult.Algorithm, digest, signResult.Signature).Value;
+    EXPECT_EQ(verifyResult.Algorithm.ToString(), verifyResult.Algorithm.ToString());
+    EXPECT_EQ(verifyResult.KeyId, edDSAKey.Id());
+    EXPECT_TRUE(verifyResult.IsValid);
+  }
+}
+
 TEST_P(KeyVaultKeyClientWithParam, RemoteSignVerifyDataRSA256)
 {
   auto const keyName = GetTestName(true);

@@ -95,6 +95,19 @@ namespace Azure { namespace Security { namespace KeyVault { namespace Keys { nam
       }
     }
 
+    explicit KeyRequestParameters(CreateEdDSAKeyOptions const& edDSAKey)
+        : KeyRequestParameters(edDSAKey.GetKeyType(), edDSAKey)
+    {
+      if (edDSAKey.KeySize.HasValue())
+      {
+        KeySize = edDSAKey.KeySize.Value();
+      }
+      if (edDSAKey.PublicExponent.HasValue())
+      {
+        PublicExponent = edDSAKey.PublicExponent.Value();
+      }
+    }
+
     explicit KeyRequestParameters(CreateOctKeyOptions const& octKey)
         : KeyRequestParameters(octKey.GetKeyType(), octKey)
     {

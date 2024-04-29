@@ -142,7 +142,22 @@ namespace Azure { namespace Security { namespace KeyVault { namespace Keys {
     Azure::Response<KeyVaultKey> CreateEcKey(
         CreateEcKeyOptions const& ecKeyOptions,
         Azure::Core::Context const& context = Azure::Core::Context()) const;
-
+    /**
+     * @brief Creates and stores a new RSA key in Key Vault.
+     *
+     * @remark If the named key already exists, Azure Key Vault creates a new version of the
+     * key.
+     *
+     * @remark This operation requires the keys/create permission.
+     *
+     * @param rsaKeyOptions The key options object containing information about the RSA key
+     * being created.
+     * @param context A Azure::Core::Context controlling the request lifetime.
+     * @return The Key wrapped in the Response.
+     */
+    Azure::Response<KeyVaultKey> CreateEdDSAKey(
+        CreateEdDSAKeyOptions const& edDSAKeyOptions,
+        Azure::Core::Context const& context = Azure::Core::Context()) const;
     /**
      * @brief Creates and stores a new RSA key in Key Vault.
      *
