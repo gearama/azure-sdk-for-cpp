@@ -283,7 +283,7 @@
     {
       "name": "enable-perf",
       "displayName": "Enable Perf",
-      "description": "Enable Perf",
+      "description": "Enable Perf (Hidden)",
       "hidden": true,
       "cacheVariables": {
         "BUILD_PERFORMANCE_TESTS": true
@@ -372,8 +372,7 @@
       "inherits": [
         "x86-msvc-static",
         "debug-build",
-        "enable-tests",
-        "enable-perf"
+        "enable-tests"
       ]
     },
     {
@@ -383,8 +382,7 @@
       "inherits": [
         "x64-static",
         "debug-build",
-        "enable-tests",
-        "enable-perf"
+        "enable-tests"
       ]
     },
     {
@@ -395,8 +393,7 @@
         "x64-static",
         "debug-build",
         "enable-tests",
-        "curl-transport",
-        "enable-perf"
+        "curl-transport"
       ]
     },
     {
@@ -407,8 +404,7 @@
         "x64-static",
         "debug-build",
         "enable-tests",
-        "winhttp-transport",
-        "enable-perf"
+        "winhttp-transport"
       ]
     },
     {
@@ -418,8 +414,7 @@
       "inherits": [
         "x64-static",
         "debug-build",
-        "enable-tests",
-        "enable-perf"
+        "enable-tests"
       ],
       "cacheVariables": {
         "VCPKG_OVERLAY_PORTS": "${sourceDir}\\vcpkg-custom-ports"
@@ -433,8 +428,7 @@
         "x86-static",
         "release-build",
         "enable-tests",
-        "curl-transport",
-        "enable-perf"
+        "curl-transport"
       ]
     },
     {
@@ -445,8 +439,7 @@
         "release-build",
         "enable-tests",
         "curl-transport",
-        "winhttp-transport",
-        "enable-perf"
+        "winhttp-transport"
       ],
       "cacheVariables": {
         "BUILD_TRANSPORT_CUSTOM": true
@@ -460,8 +453,7 @@
         "release-build",
         "enable-tests",
         "curl-transport",
-        "winhttp-transport",
-        "enable-perf"
+        "winhttp-transport"
       ],
       "cacheVariables": {
         "BUILD_TRANSPORT_CUSTOM": true
