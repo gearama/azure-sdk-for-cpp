@@ -361,8 +361,7 @@
       "inherits": [
         "x64",
         "debug-build",
-        "enable-tests",
-        "enable-perf"
+        "enable-tests"
       ]
     },
     {
