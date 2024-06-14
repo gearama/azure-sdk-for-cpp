@@ -217,10 +217,10 @@ std::string GetHeadersAsString(Azure::Core::Http::Request const& request)
 
   for (auto const& header : requestHeaders)
   {
-    requestHeaderString += header.first; // string (key)
-    requestHeaderString += ": ";
-    requestHeaderString += header.second; // string's value
-    requestHeaderString += "\r\n";
+    requestHeaderString.append(header.first); // string (key)
+    requestHeaderString.append(": ");
+    requestHeaderString.append(header.second); // string's value
+    requestHeaderString.append("\r\n");
   }
 
   // The test recording infrastructure requires that a Patch verb have a Content-Length header,
@@ -232,12 +232,12 @@ std::string GetHeadersAsString(Azure::Core::Http::Request const& request)
     {
       if (request.GetBodyStream() == nullptr || request.GetBodyStream()->Length() == 0)
       {
-        requestHeaderString += "Content-Length: 0\r\n";
+        requestHeaderString.append("Content-Length: 0\r\n");
       }
     }
   }
 
-  requestHeaderString += "\r\n";
+  requestHeaderString.append("\r\n");
 
   return requestHeaderString;
 }
@@ -365,7 +365,7 @@ namespace {
 #define APPEND_ENUM_STRING(id) \
   if (internetStatus & (id)) \
   { \
-    rv += #id " "; \
+    rv.append(#id " "); \
   }
 std::string InternetStatusToString(DWORD internetStatus)
 {
@@ -399,7 +399,7 @@ std::string InternetStatusToString(DWORD internetStatus)
   //  APPEND_ENUM_STRING(WINHTTP_CALLBACK_STATUS_GETPROXYSETTINGS_COMPLETE);
   if (internetStatus & 0x08000000)
   {
-    rv += std::string("WINHTTP_CALLBACK_STATUS_GETPROXYSETTINGS_COMPLETE") + " ";
+    rv.append(std::string("WINHTTP_CALLBACK_STATUS_GETPROXYSETTINGS_COMPLETE").append(" "));
   }
   APPEND_ENUM_STRING(WINHTTP_CALLBACK_STATUS_SETTINGS_WRITE_COMPLETE);
   APPEND_ENUM_STRING(WINHTTP_CALLBACK_STATUS_SETTINGS_READ_COMPLETE);
@@ -426,8 +426,8 @@ std::string GetErrorMessage(DWORD error)
     std::unique_ptr<char, decltype(&LocalFree)> errorString(errorMsg, &LocalFree);
     errorMsg = nullptr;
 
-    errorMessage += ": ";
-    errorMessage += errorString.get();
+    errorMessage.append(": ");
+    errorMessage.append(errorString.get());
     // If the end of the error message is a CRLF, remove it.
     if (errorMessage.back() == '\n')
     {
@@ -438,7 +438,7 @@ std::string GetErrorMessage(DWORD error)
       }
     }
   }
-  errorMessage += '.';
+  errorMessage.append(".");
   return errorMessage;
 }
 } // namespace
@@ -833,9 +833,9 @@ WinHttpTransportOptions WinHttpTransportOptionsFromTransportOptions(
     // has the following format:
     //  ([<scheme>=][<scheme>"://"]<server>[":"<port>])
     std::string proxyString;
-    proxyString = "http=" + transportOptions.HttpProxy.Value();
-    proxyString += ";";
-    proxyString += "https=" + transportOptions.HttpProxy.Value();
+    proxyString.append("http=").append(transportOptions.HttpProxy.Value());
+    proxyString.append(";");
+    proxyString.append("https=").append(transportOptions.HttpProxy.Value());
     httpOptions.ProxyInformation = proxyString;
   }
   httpOptions.ProxyUserName = transportOptions.ProxyUserName;

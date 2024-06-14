@@ -63,7 +63,7 @@ namespace Azure { namespace Storage { namespace Blobs { namespace Test {
     {
       // Get connection string from env
       const static std::string envConnectionString
-          = Azure::Core::_internal::Environment::GetVariable("STORAGE_CONNECTION_STRING");
+          = Azure::Core::_internal::Environment::GetVariable("STANDARD_STORAGE_CONNECTION_STRING");
       m_connectionString = envConnectionString;
 
       // Generate random container and blob names.

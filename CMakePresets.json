@@ -283,7 +283,7 @@
     {
       "name": "enable-perf",
       "displayName": "Enable Perf",
-      "description": "Enable Perf (Hidden)",
+      "description": "Enable Perf",
       "hidden": true,
       "cacheVariables": {
         "BUILD_PERFORMANCE_TESTS": true
@@ -361,7 +361,8 @@
       "inherits": [
         "x64",
         "debug-build",
-        "enable-tests"
+        "enable-tests",
+        "enable-perf"
       ]
     },
     {
@@ -371,7 +372,8 @@
       "inherits": [
         "x86-msvc-static",
         "debug-build",
-        "enable-tests"
+        "enable-tests",
+        "enable-perf"
       ]
     },
     {
@@ -381,7 +383,8 @@
       "inherits": [
         "x64-static",
         "debug-build",
-        "enable-tests"
+        "enable-tests",
+        "enable-perf"
       ]
     },
     {
@@ -392,7 +395,8 @@
         "x64-static",
         "debug-build",
         "enable-tests",
-        "curl-transport"
+        "curl-transport",
+        "enable-perf"
       ]
     },
     {
@@ -403,7 +407,8 @@
         "x64-static",
         "debug-build",
         "enable-tests",
-        "winhttp-transport"
+        "winhttp-transport",
+        "enable-perf"
       ]
     },
     {
@@ -413,7 +418,8 @@
       "inherits": [
         "x64-static",
         "debug-build",
-        "enable-tests"
+        "enable-tests",
+        "enable-perf"
       ],
       "cacheVariables": {
         "VCPKG_OVERLAY_PORTS": "${sourceDir}\\vcpkg-custom-ports"
@@ -427,7 +433,8 @@
         "x86-static",
         "release-build",
         "enable-tests",
-        "curl-transport"
+        "curl-transport",
+        "enable-perf"
       ]
     },
     {
@@ -438,7 +445,8 @@
         "release-build",
         "enable-tests",
         "curl-transport",
-        "winhttp-transport"
+        "winhttp-transport",
+        "enable-perf"
       ],
       "cacheVariables": {
         "BUILD_TRANSPORT_CUSTOM": true
@@ -452,7 +460,8 @@
         "release-build",
         "enable-tests",
         "curl-transport",
-        "winhttp-transport"
+        "winhttp-transport",
+        "enable-perf"
       ],
       "cacheVariables": {
         "BUILD_TRANSPORT_CUSTOM": true

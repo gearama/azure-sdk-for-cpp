@@ -417,12 +417,13 @@ CURLcode CurlSession::Perform(Context const& context)
     auto hostHeader = headers.find("Host");
     if (hostHeader == headers.end())
     {
-      Log::Write(Logger::Level::Verbose, LogMsgPrefix + "No Host in request headers. Adding it");
+      Log::Write(
+          Logger::Level::Verbose, LogMsgPrefix.append("No Host in request headers. Adding it"));
       std::string hostName = this->m_request.GetUrl().GetHost();
       auto port = this->m_request.GetUrl().GetPort();
       if (port != 0)
       {
-        hostName += ":" + std::to_string(port);
+        hostName.append(":").append(std::to_string(port));
       }
       this->m_request.SetHeader("Host", hostName);
     }
@@ -431,7 +432,9 @@ CURLcode CurlSession::Perform(Context const& context)
         && this->m_request.GetMethod() != HttpMethod::Delete
         && headers.find("content-length") == headers.end())
     {
-      Log::Write(Logger::Level::Verbose, LogMsgPrefix + "No content-length in headers. Adding it");
+      Log::Write(
+          Logger::Level::Verbose,
+          LogMsgPrefix.append("No content-length in headers. Adding it"));
       this->m_request.SetHeader(
           "content-length", std::to_string(this->m_request.GetBodyStream()->Length()));
     }
@@ -441,7 +444,8 @@ CURLcode CurlSession::Perform(Context const& context)
   if (m_httpProxy.HasValue() && m_request.GetUrl().GetScheme() == "http"
       && m_httpProxyUser.HasValue() && m_httpProxyPassword.HasValue())
   {
-    Log::Write(Logger::Level::Verbose, LogMsgPrefix + "Setting proxy authentication header");
+    Log::Write(
+        Logger::Level::Verbose, LogMsgPrefix.append("Setting proxy authentication header"));
     this->m_request.SetHeader(
         "Proxy-Authorization",
         "Basic "
@@ -452,14 +456,15 @@ CURLcode CurlSession::Perform(Context const& context)
   // use expect:100 for PUT requests. Server will decide if it can take our request
   if (this->m_request.GetMethod() == HttpMethod::Put)
   {
-    Log::Write(Logger::Level::Verbose, LogMsgPrefix + "Using 100-continue for PUT request");
+    Log::Write(
+        Logger::Level::Verbose, LogMsgPrefix.append("Using 100-continue for PUT request"));
     this->m_request.SetHeader("expect", "100-continue");
   }
 
   // Send request. If the connection assigned to this curlSession is closed or the socket is
   // somehow lost, libcurl will return CURLE_UNSUPPORTED_PROTOCOL
   // (https://curl.haxx.se/libcurl/c/curl_easy_send.html). Return the error back.
-  Log::Write(Logger::Level::Verbose, LogMsgPrefix + "Send request without payload");
+  Log::Write(Logger::Level::Verbose, LogMsgPrefix.append("Send request without payload"));
 
   auto result = SendRawHttp(context);
   if (result != CURLE_OK)
@@ -467,7 +472,7 @@ CURLcode CurlSession::Perform(Context const& context)
     return result;
   }
 
-  Log::Write(Logger::Level::Verbose, LogMsgPrefix + "Parse server response");
+  Log::Write(Logger::Level::Verbose, LogMsgPrefix.append("Parse server response"));
   result = ReadStatusLineAndHeadersFromRawResponse(context);
   if (result != CURLE_OK)
   {
@@ -482,17 +487,17 @@ CURLcode CurlSession::Perform(Context const& context)
     return result;
   }
 
-  Log::Write(Logger::Level::Verbose, LogMsgPrefix + "Check server response before upload starts");
+  Log::Write(Logger::Level::Verbose, LogMsgPrefix.append("Check server response before upload starts"));
   // Check server response from Expect:100-continue for PUT;
   // This help to prevent us from start uploading data when Server can't handle it
   if (this->m_lastStatusCode != HttpStatusCode::Continue)
   {
-    Log::Write(Logger::Level::Verbose, LogMsgPrefix + "Server rejected the upload request");
+    Log::Write(Logger::Level::Verbose, LogMsgPrefix.append("Server rejected the upload request"));
     m_sessionState = SessionState::STREAMING;
     return result; // Won't upload.
   }
 
-  Log::Write(Logger::Level::Verbose, LogMsgPrefix + "Upload payload");
+  Log::Write(Logger::Level::Verbose, LogMsgPrefix.append("Upload payload"));
   if (this->m_bodyStartInBuffer < this->m_innerBufferSize)
   {
     // If internal buffer has more data after the 100-continue means Server return an error.
@@ -514,7 +519,7 @@ CURLcode CurlSession::Perform(Context const& context)
     return result; // will throw transport exception before trying to read
   }
 
-  Log::Write(Logger::Level::Verbose, LogMsgPrefix + "Upload completed. Parse server response");
+  Log::Write(Logger::Level::Verbose, LogMsgPrefix.append("Upload completed. Parse server response"));
   result = ReadStatusLineAndHeadersFromRawResponse(context);
   if (result != CURLE_OK)
   {
@@ -710,12 +715,12 @@ inline std::string CurlSession::GetHeadersAsString(Azure::Core::Http::Request co
 
   for (auto const& header : request.GetHeaders())
   {
-    requestHeaderString += header.first; // string (key)
-    requestHeaderString += ": ";
-    requestHeaderString += header.second; // string's value
-    requestHeaderString += "\r\n";
+    requestHeaderString.append(header.first); // string (key)
+    requestHeaderString.append(": ");
+    requestHeaderString.append(header.second); // string's value
+    requestHeaderString.append("\r\n");
   }
-  requestHeaderString += "\r\n";
+  requestHeaderString.append("\r\n");
 
   return requestHeaderString;
 }
@@ -739,10 +744,10 @@ inline std::string CurlSession::GetHTTPMessagePreBody(Azure::Core::Http::Request
     url = request.GetUrl().GetAbsoluteUrl();
   }
   // HTTP version hardcoded to 1.1
-  httpRequest += " " + url + " HTTP/1.1\r\n";
+  httpRequest.append(" ").append(url).append(" HTTP/1.1\r\n");
 
   // headers
-  httpRequest += GetHeadersAsString(request);
+  httpRequest.append(GetHeadersAsString(request));
 
   return httpRequest;
 }
